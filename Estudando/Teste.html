@@ -1,0 +1,28 @@
+<html>
+<head>
+
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<title>Title of the document</title>
+</head>
+
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+
+<body>
+<script type="text/javascript">
+	var dataset = [1,2,3,4,5];
+
+	d3.select("body")
+	.selectAll("p")
+	.data(dataset)
+	.text(function(d) {return "Horas de trabalho " + d} )
+
+</script>
+
+</body>
+
+</html>

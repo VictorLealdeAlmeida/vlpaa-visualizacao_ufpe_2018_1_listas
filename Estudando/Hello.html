@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <script type="text/javascript" src="https://d3js.org/d3.v5.js""></script>
+   </head>
+   <body>
+     <p>Hello!</p>
+
+ 	<script type="text/javascript">
+
+		var dataset = [12,42,35,14,55];
+
+		var bodySelection = d3.select("body")
+		 .append("svg")
+
+
+
+		 bodySelection
+		 .attr("width", 100)
+		 .attr("height", 100)
+		 .append("circle")
+		 .attr("cx", 50)
+		 .attr("cy", 50)
+		 .attr("r", 35)
+		 .style("fill", "red");
+
+
+		d3.select("body")
+		 .append("svg")
+		 .attr("width", 100)
+		 .attr("height", 100)
+		 .append("circle")
+		 .attr("cx", 50)
+		 .attr("cy", 50)
+		 .attr("r", 35)
+		 .style("fill", "red");
+	
+
+
+ 	</script>
+   </body>
+</html>
