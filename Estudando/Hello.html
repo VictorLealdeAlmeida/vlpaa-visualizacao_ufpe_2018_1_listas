@@ -4,16 +4,11 @@
      <script type="text/javascript" src="https://d3js.org/d3.v5.js""></script>
    </head>
    <body>
-     <p>Hello!</p>
 
  	<script type="text/javascript">
 
-		var dataset = [12,42,35,14,55];
-
 		var bodySelection = d3.select("body")
 		 .append("svg")
-
-
 
 		 bodySelection
 		 .attr("width", 100)
@@ -25,16 +20,55 @@
 		 .style("fill", "red");
 
 
-		d3.select("body")
+		var dataset = [12,42,35,14,55];
+
+		var p = d3.select("body")
+		.selectAll("p")
+		.data(dataset)
+		.enter()
+		.append("p")
+		.text(function(p) {return "Hello " + p;});
+
+
+		var circleRadii = [40, 20, 10];
+
+		var bodySelection = d3.select("body")
 		 .append("svg")
-		 .attr("width", 100)
+
+		var svgContainer = bodySelection
+		 .attr("width", 600)
 		 .attr("height", 100)
+
+		var circles = svgContainer
+		 .selectAll("circle")
+		 .data(circleRadii)
+		 .enter()
 		 .append("circle")
+
+		circles
 		 .attr("cx", 50)
 		 .attr("cy", 50)
-		 .attr("r", 35)
-		 .style("fill", "red");
-	
+		 .attr("r", function (d) { return d; })
+		 .style("fill", function(d){
+		 	if (d == 40){
+		 		return "green" 
+		 	}else if (d == 20){
+		 		return "pink"
+		 	}else{
+		 		return "yellow"
+		 	}
+
+
+
+		 });
+
+ 
+ 
+ 
+
+
+
+
 
 
  	</script>
