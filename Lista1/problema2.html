@@ -8,11 +8,13 @@
    	<body>
 
    		<script type="text/javascript">
+
+   			var height = 450
    			
    			var svgContainer = d3.select("body")
  			.append("svg")
  			.attr("width", 600)
- 			.attr("height", 400)
+ 			.attr("height", height)
 
  			var rect = svgContainer.selectAll("rect")
  			.data(dataset)
@@ -20,9 +22,9 @@
  			.append("rect");
 
  			var rectAttributes = rect
- 			.attr("x", function(d, index){ return index*50})
- 			.attr("y", function(d){ return 5*d.books; })
- 			.attr("height", function(d){ return 400 - 5*d.books; })
+ 			.attr("x", function(d, index){ return index*50; })
+ 			.attr("y", function(d){ return (height - 7*d.books) - 40; })
+ 			.attr("height", function(d){ return 7*d.books; })
  			.attr("width", 40)
  			.text(function(d){ return d.books; })
  			.style("fill", function(d){
@@ -44,9 +46,33 @@
  					return "black"
  				};
 
-
  			})
+			var text = svgContainer.selectAll("#p")
+           		.data(dataset)
+           		.enter()
+            	.append("text");
 
+			var textLabels = text
+				.attr("x", function(d, index){ return index*50 + 8; })
+				.attr("y", function(d){ return (height - 7*d.books + 25) - 40; })
+				.text(function(d){ return d.books; })
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "20px")
+				.attr("fill", "white");
+
+			var text2 = svgContainer.selectAll("#u")
+           		.data(dataset)
+           		.enter()
+            	.append("text");
+
+			var textLabels2 = text2
+				.attr("x", function(d, index){ return index*50 + 4; })
+				.attr("y", function(d){ return height - 25; })
+				.text(function(d){ return d.year; })
+				.attr("font-family", "sans-serif")
+				.attr("font-size", "15px")
+				.attr("fill", "black");
+ 	
 
    		</script>
 
