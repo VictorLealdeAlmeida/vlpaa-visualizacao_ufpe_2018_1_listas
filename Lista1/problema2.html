@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+ <html>
+  	<head>
+    	<title>Problema2</title>
+    	<script src="https://visualizacao-ufpe.github.io/data_vis_assignments/2018.1/datasetProblema2.js"></script>
+    	<script type="text/javascript" src="https://d3js.org/d3.v5.js""></script>
+   	</head>
+   	<body>
+
+   		<script type="text/javascript">
+   			
+   			var svgContainer = d3.select("body")
+ 			.append("svg")
+ 			.attr("width", 600)
+ 			.attr("height", 400)
+
+ 			var rect = svgContainer.selectAll("rect")
+ 			.data(dataset)
+ 			.enter()
+ 			.append("rect");
+
+ 			var rectAttributes = rect
+ 			.attr("x", function(d, index){ return index*50})
+ 			.attr("y", function(d){ return 5*d.books; })
+ 			.attr("height", function(d){ return 400 - 5*d.books; })
+ 			.attr("width", 40)
+ 			.text(function(d){ return d.books; })
+ 			.style("fill", function(d){
+ 				if (d.favoriteGenre == "romance"){
+ 					return '#fbb4ae'
+ 				}else if (d.favoriteGenre == "policial"){
+ 					return '#b3cde3' 
+ 				}else if (d.favoriteGenre == "biografia"){
+ 					return '#ccebc5'
+ 				}else if (d.favoriteGenre == "ficcao"){
+ 					return '#decbe4'
+ 				}else if (d.favoriteGenre == "conto"){
+ 					return '#fed9a6'
+ 				}else if (d.favoriteGenre == "cronica"){
+ 					return '#ffffcc'
+ 				}else if (d.favoriteGenre == "poesia"){
+ 					return '#e5d8bd'
+ 				}else{
+ 					return "black"
+ 				};
+
+
+ 			})
+
+
+   		</script>
+
+  	</body>
+</html>
