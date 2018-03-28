@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+ <html>
+	<head>
+        <meta charset="utf-8">
+        <title>D3 Page Template</title>
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+<body>
+  <svg width="500" height="500"></svg>
+        <script type="text/javascript">
+            // Your beautiful D3 code will go here
+	    var dataset = [[5, 20], [480, 90], [250, 50], [100, 33], [330, 95],
+            [495, 12], [475, 44], [25, 67], [85, 21], [220, 88]];
+
+        // definir margem com pelo menos o tamanho do raio do círculo
+		var margin = {top:60, right:60, bottom:5, left:60};
+		var width = 500 - margin.left - margin.right;
+		var height = 500 - margin.top - margin.bottom;
+
+		var yScale = d3.scaleLinear().domain([0,500]).range([0,width]);
+		var xScale = d3.scaleLinear().domain([0,500]).range([height,0]);
+		var group = d3.select("svg").append("g"); 
+		
+		var cScale = d3.scaleLinear().domain([0,100]).range(["black","red"]);
+
+		var x = d3.scaleTime()
+		.domain([new Date(2000, 0, 1), new Date(2000, 0, 2)])
+		.range([0, 960]);
+
+		
+	    group.selectAll("circle")
+	    .data(dataset)
+	    .enter()
+	    .append("circle")
+	    .attr("cx",d=>xScale(d[0]))
+	    .attr("cy",d=>yScale(d[1]))
+	    // alterando o atributo fill do y
+	    .attr("fill",d=>cScale(d[1]))
+	    .attr("r",5);
+
+	    group.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+	    	var xAxis = d3.axisBottom(xScale);
+		group.call(xAxis);
+
+		var xAxisGroup = mySVG.append("g2")
+
+		.attr("class","xAxis")
+		.attr("transform","translate(0,"+(height-margin.top)+")");
+
+		var xAxis = d3.axisBottom(xScale);
+		xAxisGroup.call(xAxis);
+
+
+	</script>
+    </body>
+</html>
+
