@@ -4,7 +4,7 @@ var temperature ={
         "RecordLow": [11.9, 12.4, 12.0, 6.8, 3.7, 4.2, 0.8, 3.4, 3.5, 7.0, 7.0, 10.3]
         }
 
-var tMaxMin = temperature.RecordHigh.concat(temperature.RecordLow)
+var tMaxMin = (temperature.RecordHigh.concat(temperature.RecordLow)).concat(temperature.RecordHigh[0])
 
 var margin = {top: 20, right: 50, bottom: 50, left: 50},
     width = 900 - margin.left - margin.right,
@@ -27,8 +27,10 @@ var valueline = d3.svg.line()
 
     if (index < 12){
         return (width/11)*index;
-    }else{
+    }else if(index < 24){
         return (width/11)*(11 - (index % 12));
+    }else{
+        return 0;
     } 
 
     })
@@ -58,6 +60,8 @@ y.domain([0, d3.max(tMaxMin, function(d) { console.log(d)
     // Add the valueline path.
 svg.append("path")
     .attr("class", "line")
+    .attr("fill", "#FB8183")
+    .attr("stroke", "#FB8183")
     .attr("d", valueline(tMaxMin));
 
     // Eixo X
@@ -65,6 +69,7 @@ svg.append("g")
         //.attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
+    .attr("stroke", "black")
     .selectAll("text")  
         .attr("ss")
             
@@ -73,7 +78,8 @@ svg.append("g")
     // Eixo Y
 svg.append("g")
        // .attr("class", "y axis")
-    .call(yAxis);
+    .call(yAxis)
+    .attr("stroke", "black");
 
 
 
