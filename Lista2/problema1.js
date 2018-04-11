@@ -5,28 +5,8 @@ var margin = {top: 30, right: 30, bottom: 30, left: 30},
     width = 760 - margin.left - margin.right,
     height = 360 - margin.top - margin.bottom;
 
-/*
-//ranges
-var x = d3.time.scale().range([0, width]);
-var y = d3.scale.linear().range([height, 0]);
 
-
-var xAxis = d3.svg.axis().scale(x)
-    .orient("bottom").ticks(5);
-var yAxis = d3.svg.axis().scale(y)
-    .orient("left").ticks(5);
-
-
-var svg = d3.select("body")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", 
-              "translate(" + margin.left + "," + margin.top + ")");    */
-
-
-var svg = d3.select("body").append("svg")
+var svgC = d3.select("body").append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
@@ -41,7 +21,7 @@ var axisScaleX = d3.scaleBand()
 
 var xAxis = d3.axisBottom(axisScaleX);
 
-var xAxisGroup = svg.append("g")
+var xAxisGroup = svgC.append("g")
 .attr("transform", "translate(0," + height + ")")
 .call(xAxis);
 
@@ -53,10 +33,19 @@ var axisScaleY = d3.scaleLinear()
 
 var yAxis = d3.axisLeft(axisScaleY)
 
-var yAxisGroup = svg.append("g")
+var yAxisGroup = svgC.append("g")
 .call(yAxis);
 
+//Line
+
+var lineData = [ { "x": 1,   "y": 5},  { "x": 20,  "y": 20},
+                 { "x": 40,  "y": 10}, { "x": 60,  "y": 40},
+                 { "x": 80,  "y": 5},  { "x": 100, "y": 60}];
 
 
-
+var lineGraph = svgC.append("path")
+                        .attr("d", lineFunction(lineData))
+                        .attr("stroke", "blue")
+                        .attr("stroke-width", 2)
+                        .attr("fill", "none");
 
