@@ -1,22 +1,37 @@
-// Set the dimensions of the canvas / graph
+var temperature ={
+        "RecordHigh":[34.2, 34.7, 33.5, 31.4, 29.7, 28.6, 29.3, 33.0, 35.2, 34.5, 35.3, 33.5],
+        "DailyMean": [22.1, 22.4, 21.8, 19.7, 17.4, 16.3, 15.8, 17.1, 17.9, 19.0, 20.2, 21.1],
+        "RecordLow": [11.9, 12.4, 12.0, 6.8, 3.7, 4.2, 0.8, 3.4, 3.5, 7.0, 7.0, 10.3]
+        }
+
+var tMaxMin = temperature.RecordHigh.concat(temperature.RecordLow)
+
 var margin = {top: 20, right: 50, bottom: 50, left: 50},
-    width = 600 - margin.left - margin.right,
-    height = 270 - margin.top - margin.bottom;
+    width = 900 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
 // Set the ranges
-var x = d3.time.scale().range([0, width]);
-var y = d3.time.scale().range([height, 0]);
+var x = d3.scale.linear().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
 
 // Define the axes
 var xAxis = d3.svg.axis().scale(x)
     .orient("bottom").ticks(10);
 
 var yAxis = d3.svg.axis().scale(y)
-    .orient("left").ticks(5);
+    .orient("left").ticks(8);
 
 // Define the line
 var valueline = d3.svg.line()
-    .x(function(d,index) { return x(20*index); })
+    .x(function(d,index) {
+
+    if (index < 12){
+        return (width/11)*index;
+    }else{
+        return (width/11)*(11 - (index % 12));
+    } 
+
+    })
     .y(function(d) { return y(d); });
     
 // Adds the svg canvas
@@ -28,34 +43,37 @@ var svg = d3.select("body")
         .attr("transform", 
               "translate(" + margin.left + "," + margin.top + ")");
 
-
-        var temperature ={
-"RecordHigh":[34.2, 34.7, 33.5, 31.4, 29.7, 28.6, 29.3, 33.0, 35.2, 34.5, 35.3, 33.5],
-"DailyMean": [22.1, 22.4, 21.8, 19.7, 17.4, 16.3, 15.8, 17.1, 17.9, 19.0, 20.2, 21.1],
-"RecordLow": [11.9, 12.4, 12.0, 6.8, 3.7, 4.2, 0.8, 3.4, 3.5, 7.0, 7.0, 10.3]
-}
-
     // Scale the range of the data
-    x.domain(d3.extent(temperature.RecordHigh, function(d,index) { return 10*index; }));
-    y.domain([0, d3.max(temperature.RecordHigh, function(d) { return d; })]);
+x.domain(d3.extent(tMaxMin, function(d,index) { 
+
+    if (index < 12){
+        return index;
+    }
+
+    }));
+y.domain([0, d3.max(tMaxMin, function(d) { console.log(d) 
+    return d; })]);
+
 
     // Add the valueline path.
-    svg.append("path")
-        .attr("class", "line")
-        .attr("d", valueline(temperature.RecordHigh));
+svg.append("path")
+    .attr("class", "line")
+    .attr("d", valueline(tMaxMin));
 
     // Eixo X
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .selectAll("text")  
+svg.append("g")
+        //.attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")  
+        .attr("ss")
+            
             
 
     // Eixo Y
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis);
+svg.append("g")
+       // .attr("class", "y axis")
+    .call(yAxis);
 
 
 
