@@ -6,18 +6,12 @@ var margin = {top: 20, right: 50, bottom: 50, left: 50},
     width = 1200 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-// Set the ranges
+// Ranges
 var x = d3.scaleBand().range([0, width]).paddingInner(1);
 var y = d3.scaleLinear().range([height, 0]);
 
-
-
-// Define the axes
 var xAxis = d3.axisBottom(x);
-
 var yAxis = d3.axisLeft(y);
-
-
 
 // Area de max e min
 var valueline = d3.line()
@@ -36,9 +30,6 @@ var areaL = valueline
     })
     .y(function(d) { return y(d); });
 
-//Linha da media
-
-
     
 // SVG Canvas
 var svg = d3.select("body")
@@ -50,15 +41,7 @@ var svg = d3.select("body")
               "translate(" + margin.left + "," + margin.top + ")");
 
 x.domain(months)
-/*x.domain(d3.extent(tMaxMin, function(d,index) { 
-
-    if (index < 12){
-        return index;
-    }
-
-    }));*/
-y.domain([0, d3.max(tMaxMin, function(d) { console.log(d) 
-    return d; })]);
+y.domain([0, d3.max(tMaxMin, function(d) { return d; })]);
 
 
 svg.append("path")
