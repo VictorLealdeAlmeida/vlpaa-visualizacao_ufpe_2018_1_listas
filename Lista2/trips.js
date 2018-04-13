@@ -1197,7 +1197,7 @@ var trips = [{post:"04/08/2014",origin:"Recife",destination:"RiodeJaneiro",price
 {post:"14/11/2014",origin:"Recife",destination:"Teresina",price:484,start:"03/03/2015",end:"10/03/2015",carrier:"Azul"},
 {post:"11/11/2014",origin:"Brasilia",destination:"Recife",price:319,start:"19/03/2015",end:"26/03/2015",carrier:"Azul"},
 {post:"11/11/2014",origin:"Brasilia",destination:"Recife",price:452,start:"04/02/2015",end:"11/02/2015",carrier:"Azul"},
-{post:"06/11/2014",origin:"FortLauderdale",destination:"Recife",price:626,start:"02/12/2014",end:"null",carrier:"Azul"},
+{post:"06/11/2014",origin:"FortLauderdale",destination:"Recife",price:626,start:"02/12/2014",end:"12/12/2014",carrier:"Azul"}, //null??
 {post:"31/10/2014",origin:"Maceio",destination:"Recife",price:339,start:"29/12/2014",end:"13/01/2015",carrier:"Azul"},
 {post:"31/10/2014",origin:"Recife",destination:"Maceio",price:340,start:"05/01/2015",end:"12/01/2015",carrier:"Azul"},
 {post:"31/10/2014",origin:"Recife",destination:"Natal",price:132,start:"18/11/2014",end:"25/11/2014",carrier:"Azul"},
