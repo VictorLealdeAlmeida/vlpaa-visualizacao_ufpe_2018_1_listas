@@ -118,26 +118,22 @@ var chart = d3.select('body')
 .append('svg:svg')
 .attr('width', width + margin.right + margin.left)
 .attr('height', height + margin.top + margin.bottom)
-.attr('class', 'chart')
 
 var main = chart.append('g')
 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
 .attr('width', width)
 .attr('height', height)
-.attr('class', 'main')   
 
 var xAxis = d3.axisBottom(x);
 
 main.append('g')
 .attr('transform', 'translate(0,' + height + ')')
-.attr('class', 'main axis date')
 .call(xAxis);
 
 var yAxis = d3.axisLeft(y);
 
 main.append('g')
 .attr('transform', 'translate(0,0)')
-.attr('class', 'main axis date')
 .call(yAxis);
 
 var g = main.append("svg:g"); 
@@ -152,5 +148,37 @@ g.selectAll("scatter-dots")
       .style("opacity", 0.7); 
             
 
+
+//Terceira parte
+
+ chart.append("g")
+      .call(d3.brush().extent([[0, 0], [width, height]]).on("brush", brushed).on("end", brushended));
+
+
+ function brushed() {
+         var s = d3.event.selection,
+             x0 = s[0][0],
+             y0 = s[0][1],
+             dx = s[1][0] - x0,
+             dy = s[1][1] - y0;
+
+         svg.selectAll('circle')
+            .style("fill", function (d) {
+                if (x(d.x) >= x0 && x(d.x) <= x0 + dx && y(d.y) >= y0 && y(d.y) <= y0 + dy)
+                     { console.log("a")
+                        return "#ec7014"; }
+                else { return "#4292c6"; }
+            });
+     }
+
+     function brushended() {
+         if (!d3.event.selection) {
+             svg.selectAll('circle')
+               .transition()
+               .duration(150)
+               .ease(d3.easeLinear)
+               .style("fill", "#4292c6");
+         }
+     }
 
 
