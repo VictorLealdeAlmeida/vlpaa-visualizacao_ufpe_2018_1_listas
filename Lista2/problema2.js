@@ -1,7 +1,7 @@
 
 months = ["Gol","Tam","Azul"]
 
-var qtdVoos = [{key: "Gol", value: 0}, {key: "Tam", value: 0}, {key: "Azul", value: 0}]
+var qtdVoos = [{key: "Gol", value: 0, color: "orange"}, {key: "Tam", value: 0, color: "red"}, {key: "Azul", value: 0, color: "blue"}]
 
 
 contaVoos()
@@ -70,25 +70,34 @@ var rectAttributes = rect
             .attr("y", function(d){ return height-d; })
             .attr("height", function(d){ return d; })
             .attr("width", 40)
-            .attr("fill","green");
-
+            .attr("fill",function (d,i) { return qtdVoos[i].color;});
 
 
 //Parte 2
 
 var prices =[];
 var postStart = [];
+var colors = [];
 
 setDate()
 
 function setDate(){
     for (var i = 0; i < trips.length; i++) {
         prices.push(trips[i].price)
+        
         var startF = new Date(trips[i].start.substring(3,5) + "/" + trips[i].start.substring(0,2) + trips[i].start.substring(5))
         var endF = new Date(trips[i].post.substring(3,5) + "/" + trips[i].post.substring(0,2) + trips[i].post.substring(5))
         var timeDiff = Math.abs(endF.getTime() - startF.getTime());
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         postStart.push(diffDays)
+
+        if (trips[i].carrier == "Gol"){
+            colors.push("orange")
+        }else if (trips[i].carrier == "Tam"){
+            colors.push("red")
+        }else if (trips[i].carrier == "Azul"){
+            colors.push("blue")
+        }
     }
 }
 
@@ -139,7 +148,7 @@ g.selectAll("scatter-dots")
       .attr("cy", function (d) { return y(d); } ) 
       .attr("cx", function (d,i) { return x(postStart[i]); } ) 
       .attr("r", 5) 
-      .attr("fill","green")
+      .attr("fill",function (d,i) { return colors[i];})
       .style("opacity", 0.7); 
             
 
