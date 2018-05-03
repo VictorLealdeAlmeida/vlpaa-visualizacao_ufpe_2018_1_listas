@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<meta charset="UTF-8">
+	<title>á</title>
 	<script src="https://d3js.org/d3.v4.js"></script>
+	<meta charset="ISO-8859-1">
 </head>
 <body>
 	<script type="text/javascript">
 		
 		d3.json("geojs-100-mun.geojson", 
 		    function (error, data){
-			console.log(data)
 			});
 
 			var projection = d3.geoMercator()
-			.translate([2000/2, 2000/2])
-			.scale([500]);
+			.translate([950, 100])
+			.scale([700]);
 
 			var path = d3.geoPath().projection(projection);
 
 
-			d3.csv("aids_por_estado.csv", function(aids){
+			d3.csv("oco.csv", function(aids){
 				console.log(aids);
-			
+
+				console.log(("São Paulo"))
+
+			 
 			d3.json("geojs-100-mun.geojson", function(json){
 
 
 				var svgContainer = d3.select("body")
  				.append("svg")
- 				.attr("width", 2000)
- 				.attr("height", 2000)
+ 				.attr("width", 1000)
+ 				.attr("height", 1000)
 
 				svgContainer.selectAll("path")
 				.data(json.features)
 				.enter()
 				.append("path")
 				.attr("d", path)
-				.attr("fill", function(d) {return "orange"})
+				.attr("fill", function(d, index) {
+				
+				//console.log(d['properties'].name)
+
+					if ((d['properties'].name == "Recife") || (d['properties'].name == "São Paulo") ){
+						return "black"
+					}
+					return "orange"})
 				.style("stroke","white")
+				.attr("stroke-width", 0.2)
 
 
 
