@@ -4,15 +4,33 @@
 	<meta charset="UTF-8">
 	<title>Problema1</title>
 	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
-	<script type="text/javascript">
-		
-		d3.json("geojs-100-mun.geojson", 
-		    function (error, data){
-			});
 
+	<form>
+ 	Escolha o modo de visualização?<br>
+  	<input type="radio" name="colors" id="modo1">Infos por municípios<br>
+  	<input type="radio" name="colors" id="modo2">Choropleth por estado<br>
+  	<input type="radio" name="colors" id="modo3">Choropleth por município<br>
+	</form>
+
+	<button onclick="check()">Check</button>
+
+	<script type="text/javascript">
+
+
+		function check() {
+			d3.select("body").selectAll("svg").remove();
+    		if (document.getElementById("modo3").checked = true) {
+    			modo3()
+    		};
+		}
+
+
+		function modo3(){
 			var projection = d3.geoMercator()
 			.translate([950, 100])
 			.scale([700]);
@@ -53,25 +71,66 @@
 				.enter()
 				.append("path")
 				.attr("d", path)
-				.attr("fill", function(d, index) {
-					//console.log(index)
-
-						//console.log(d['properties'].name.toUpperCase() + " + " + freq[0][index])
-						
-					if (colors[(d['properties'].name.toUpperCase())] == 1){
-						return "red"
-					}
-				
-
-					return "orange"})
-
 				.style("stroke","white")
 				.attr("stroke-width", 0.2)
+				.attr("fill", function(d, index) {
+
+					let x = colors[(d['properties'].name.toUpperCase())]
+					switch(true){
+						case (x > 50): 
+							return "#67000d";
+							break
+						case (x > 30): 
+							return "#a50f15";
+							break
+						case (x > 22): 
+							return "#cb181d";
+							break
+						case (x > 15): 
+							return "#ef3b2c";
+							break
+						case (x > 10): 
+							return "#fb6a4a";
+							break
+						case (x > 7): 
+							return "#fc9272";
+							break
+						case (x > 3): 
+							return "#fcbba1";
+							break
+						case (x > 0): 
+							return "#fee0d2";
+							break
+						default: 
+							return "#fff5f0";
+
+					}
+				});
 
 
+				// Color legend.
+				var colorsLegend = ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]
 
+
+			      var colorScale = d3.scaleQuantize()
+			        .domain([ 0, maxvalue(freq[1])])
+			        .range(colorsLegend);
+
+			      var colorLegend = d3.legendColor()
+			        .labelFormat(d3.format(".0f"))
+			        .scale(colorScale)
+			        .shapePadding(5)
+			        .shapeWidth(40)
+			        .shapeHeight(15)
+			        .labelOffset(9);
+
+			      svgContainer.append("g")
+			        .attr("transform", "translate(500, 500)")
+			        .call(colorLegend);
+
+				});
 			});
-		});
+		};
 
 	function frequency(arr) {
    		var a = [], b = [], prev;
@@ -89,6 +148,12 @@
 
     	return [a, b];
 	}
+
+	function maxvalue(arr) {
+    	arr.sort((a, b) => a - b);
+    	return arr[arr.length - 1];
+	}
+
 
 
 	</script>
