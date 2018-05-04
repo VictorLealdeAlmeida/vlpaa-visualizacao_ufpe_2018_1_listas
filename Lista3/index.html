@@ -2,9 +2,9 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>á</title>
+	<title>Problema1</title>
 	<script src="https://d3js.org/d3.v4.js"></script>
-	<meta charset="ISO-8859-1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <body>
 	<script type="text/javascript">
@@ -20,14 +20,28 @@
 			var path = d3.geoPath().projection(projection);
 
 
-			d3.csv("oco.csv", function(aids){
-				console.log(aids);
+			d3.csv("oco.csv", function(data){
+				
+				var oco = data
+				var freq = []
+				var colors = {};
 
-				console.log(("São Paulo"))
+				oco.forEach(function(d) {
+      			 	freq.push(d.ocorrencia_cidade);
+    			});
+
+    			freq = frequency(freq)
+    			//console.log(freq[0])
+
+    			freq[0].forEach(function(d,index){
+    				colors[d] = freq[1][index]
+    			});
+
+    			console.log(colors)
+    			
 
 			 
 			d3.json("geojs-100-mun.geojson", function(json){
-
 
 				var svgContainer = d3.select("body")
  				.append("svg")
@@ -40,13 +54,17 @@
 				.append("path")
 				.attr("d", path)
 				.attr("fill", function(d, index) {
-				
-				//console.log(d['properties'].name)
+					//console.log(index)
 
-					if ((d['properties'].name == "Recife") || (d['properties'].name == "São Paulo") ){
-						return "black"
+						//console.log(d['properties'].name.toUpperCase() + " + " + freq[0][index])
+						
+					if (colors[(d['properties'].name.toUpperCase())] == 1){
+						return "red"
 					}
+				
+
 					return "orange"})
+
 				.style("stroke","white")
 				.attr("stroke-width", 0.2)
 
@@ -54,6 +72,23 @@
 
 			});
 		});
+
+	function frequency(arr) {
+   		var a = [], b = [], prev;
+
+    	arr.sort();
+    	for ( var i = 0; i < arr.length; i++ ) {
+	     	if ( arr[i] !== prev ) {
+	        	a.push(arr[i]);
+	         	b.push(1);
+	       	} else {
+	            b[b.length-1]++;
+	       	}
+	        prev = arr[i];
+    	}
+
+    	return [a, b];
+	}
 
 
 	</script>
