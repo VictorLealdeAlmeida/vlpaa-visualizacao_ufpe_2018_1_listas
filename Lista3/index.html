@@ -12,7 +12,7 @@
 
 	<form>
  	Escolha o modo de visualização<br>
-  	<input type="radio" name="colors" id="modo1">Infos por municípios<br>
+  	<input type="radio" name="colors" id="modo1">Infos por municípios (Não Completo)<br>
   	<input type="radio" name="colors" id="modo2">Choropleth por estado<br>
   	<input type="radio" name="colors" id="modo3">Choropleth por município<br>
 	</form>
@@ -78,7 +78,7 @@
 				.style("stroke","white")
 				.attr("stroke-width", 0.2)
 				.attr("fill", function(d, index) {
-
+					console.log(d['properties'].name)
 					let x = colors[(d['properties'].name.toUpperCase())]
 					switch(true){
 						case (x > 50): 
@@ -291,10 +291,13 @@
 
 				var circleAttributes = circles
                        .attr("cx", function (d,i) { 
-                       	console.log(i)
-                       	return 10*d.ocorrencia_longitude; })
-                       .attr("cy", function (d) { return 10*d.ocorrencia_latitude; })
+                       	return (8)*d.ocorrencia_longitude; })
+                       .attr("cy", function (d) { 
+						console.log(d.ocorrencia_latitude)
+                       	return (8)*d.ocorrencia_latitude; })
                        .attr("r", function (d) { return 1; })
+                       .attr("d", path)
+                       .attr("transform", "translate(800, 200)")
                        .style("fill", function(d) { 
 
                        	if (d.ocorrencia_classificacao == "ACIDENTE"){
