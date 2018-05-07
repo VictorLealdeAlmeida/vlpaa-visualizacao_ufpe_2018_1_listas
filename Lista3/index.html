@@ -11,7 +11,7 @@
 <body>
 
 	<form>
- 	Escolha o modo de visualização?<br>
+ 	Escolha o modo de visualização<br>
   	<input type="radio" name="colors" id="modo1">Infos por municípios<br>
   	<input type="radio" name="colors" id="modo2">Choropleth por estado<br>
   	<input type="radio" name="colors" id="modo3">Choropleth por município<br>
@@ -24,8 +24,12 @@
 
 		function check() {
 			d3.select("body").selectAll("svg").remove();
-    		if (document.getElementById("modo3").checked = true) {
+    		if (document.getElementById("modo3").checked) {
     			modo3()
+    		}else if (document.getElementById("modo2").checked) {
+    			modo2()
+    		}else{
+    			modo1()
     		};
 		}
 
@@ -132,6 +136,180 @@
 			});
 		};
 
+		function modo2(){
+			var projection = d3.geoMercator()
+			.translate([950, 100])
+			.scale([700]);
+
+			var path = d3.geoPath().projection(projection);
+
+
+			d3.csv("oco.csv", function(data){
+				
+				var oco = data
+				var freq = []
+				var colors = {};
+
+				oco.forEach(function(d) {
+      			 	freq.push(d.ocorrencia_uf);
+    			});
+
+    			freq = frequency(freq)
+    			console.log(oco)
+
+    			freq[0].forEach(function(d,index){
+    				colors[d] = freq[1][index]
+    			});
+
+    			//console.log(colors)
+    			
+
+			 
+			d3.json("estados.geojson", function(json){
+
+				var svgContainer = d3.select("body")
+ 				.append("svg")
+ 				.attr("width", 1000)
+ 				.attr("height", 1000)
+
+				svgContainer.selectAll("path")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.style("stroke","white")
+				.attr("stroke-width", 1)
+				.attr("fill", function(d, index) {
+					
+					let x = colors[(d['properties'].sigla.toUpperCase())]
+					switch(true){
+						case (x > 1043): 
+							return "#67000d";
+							break
+						case (x > 913): 
+							return "#a50f15";
+							break
+						case (x > 783): 
+							return "#cb181d";
+							break
+						case (x > 653): 
+							return "#ef3b2c";
+							break
+						case (x > 523): 
+							return "#fb6a4a";
+							break
+						case (x > 393): 
+							return "#fc9272";
+							break
+						case (x > 263): 
+							return "#fcbba1";
+							break
+						case (x > 133): 
+							return "#fee0d2";
+							break
+						default: 
+							return "#fff5f0";
+
+					}
+				});
+
+
+				// Color legend.
+				var colorsLegend = ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]
+
+
+			      var colorScale = d3.scaleQuantize()
+			        .domain([ minvalue(freq[1]), maxvalue(freq[1])])
+			        .range(colorsLegend);
+
+			      var colorLegend = d3.legendColor()
+			        .labelFormat(d3.format(".0f"))
+			        .scale(colorScale)
+			        .shapePadding(5)
+			        .shapeWidth(40)
+			        .shapeHeight(15)
+			        .labelOffset(9);
+
+			      svgContainer.append("g")
+			        .attr("transform", "translate(500, 500)")
+			        .call(colorLegend);
+
+				});
+			});
+		};
+
+
+		function modo1(){
+			var projection = d3.geoMercator()
+			.translate([950, 100])
+			.scale([700]);
+
+			var path = d3.geoPath().projection(projection);
+
+
+			d3.csv("oco.csv", function(data){
+				
+				var oco = data
+				var freq = []
+				var colors = {};
+
+				oco.forEach(function(d) {
+      			 	freq.push(d.ocorrencia_cidade);
+    			});
+
+    			freq = frequency(freq)
+    			//console.log(freq[0])
+
+    			freq[0].forEach(function(d,index){
+    				colors[d] = freq[1][index]
+    			});    			
+
+			 
+			d3.json("geojs-100-mun.geojson", function(json){
+
+				var svgContainer = d3.select("body")
+ 				.append("svg")
+ 				.attr("width", 1000)
+ 				.attr("height", 1000);
+
+				var map = svgContainer.selectAll("path")
+				.data(json.features)
+				.enter()
+				.append("path")
+				.attr("d", path)
+				.style("stroke","black")
+				.attr("stroke-width", 0.2)
+				.attr("fill", "white")
+
+				var circles = svgContainer.selectAll("circle")
+                          .data(oco)
+                          .enter()
+                          .append("circle");
+
+                          console.log(oco);
+
+
+				var circleAttributes = circles
+                       .attr("cx", function (d,i) { 
+                       	console.log(i)
+                       	return 10*d.ocorrencia_longitude; })
+                       .attr("cy", function (d) { return 10*d.ocorrencia_latitude; })
+                       .attr("r", function (d) { return 1; })
+                       .style("fill", function(d) { 
+
+                       	if (d.ocorrencia_classificacao == "ACIDENTE"){
+                       		return "red";
+                       	}else if (d.ocorrencia_classificacao == "INCIDENTE"){
+                       		return "blue"
+                       	}else{
+                       		return "green"; 
+                       	}
+                    });
+			});
+		});
+
+	};
+
 	function frequency(arr) {
    		var a = [], b = [], prev;
 
@@ -154,7 +332,11 @@
     	return arr[arr.length - 1];
 	}
 
-
+	function minvalue(arr) {
+		console.log(arr)
+    	arr.sort((a, b) => a - b);
+    	return arr[0];
+	}
 
 	</script>
 
